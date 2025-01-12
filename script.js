@@ -64,15 +64,9 @@ function handleDecimalInput(){
     }
 }
 
-function changeToIntOrFloat(operand){
-    //Inprogress
-    if(operand.includes(".")){
-        operand = parseFloat(operand);
-    }
-}
-
 function operate(ope1, operator, ope2){
     //Assign result to ope1 and clear ope2
+    //use is Number.isIntger() to determine if answer is an integer/whole number or float
     console.log(ope1,operator,ope2);
 }
 
