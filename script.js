@@ -3,6 +3,7 @@ const clearBtn = document.querySelector(".clear");
 const numbs = document.querySelectorAll(".num");
 const decimalBtn = document.querySelector(".decimal");
 const operators = document.querySelectorAll(".operator");
+const backBtn = document.querySelector(".backspace");
 const percentBtn = document.querySelector(".percent");
 const signBtn = document.querySelector(".plus-minus");
 
@@ -13,10 +14,10 @@ let operand2 = null;
 function toDisplay(numBtnInput){
     /* Checks inital display content to see if it's on standby
        If a decimal is clicked on during standby it keeps the 0 else it overwrites it */
-    if(display.textContent === "0" && numBtnInput.textContent !== "."){
+    if(display.textContent === "0" && numBtnInput !== "."){
         display.textContent = "";
     }
-    display.textContent += numBtnInput.textContent;
+    display.textContent += numBtnInput;
 }
 
 function clear(){
@@ -24,6 +25,10 @@ function clear(){
     operand1 = null;
     operator = "";
     operand2 = null;
+}
+
+function backspace(){
+    pass;
 }
 
 function toPercent(display){
@@ -42,6 +47,12 @@ function changeSign(display){
     display.textContent = `-${display.textContent}`;
 }
 
+function handleDecimalInput(){
+    if (!display.textContent.includes(decimalBtn.textContent)) {
+        toDisplay(decimalBtn.textContent);
+    }
+}
+
 function changeToIntOrFloat(operand){
     //Inprogress
     if(operand.includes(".")){
@@ -54,6 +65,9 @@ function operate(){
 }
 
 clearBtn.addEventListener('click', clear);
+
+backBtn.addEventListener('click', backspace);
+
 signBtn.addEventListener('click', () => {
     changeSign(display);
 });
@@ -62,17 +76,12 @@ percentBtn.addEventListener('click', () => {
     toPercent(display);
 });
 
-decimalBtn.addEventListener('click', () => {
-    if(!display.textContent.includes(decimalBtn.textContent)){
-        toDisplay(decimalBtn);
-    }
-});
-
+decimalBtn.addEventListener('click', handleDecimalInput);
 
 //Displays numbers on the screen
 numbs.forEach(numb => {
     numb.addEventListener("click",() => {
-        toDisplay(numb);
+        toDisplay(numb.textContent);
     })
 });
 
@@ -81,6 +90,17 @@ operators.forEach(ope => {
         operand1 = display.textContent;
         operator = ope.textContent;
     });
+});
+
+//Keyboard Inputs
+document.addEventListener('keydown', (event) => {
+    if(event.key === "."){
+        handleDecimalInput();
+    }
+    //Checks if the key is a number excluding the spacebar
+    else if(!isNaN(event.key) && event.key !== " "){
+        toDisplay(event.key);
+    }
 });
 
 clear();
