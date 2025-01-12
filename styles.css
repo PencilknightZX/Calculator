@@ -54,6 +54,6 @@ button{
 .num, .decimal{
     background-color: #505050;
 }
-.operator{
+.operator, .equal{
     background-color: #FF9500;
 }
