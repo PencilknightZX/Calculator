@@ -12,6 +12,7 @@ let operand1 = null;
 let operator = "";
 let operand2 = null;
 let clearForOperand2 = false;
+let activeOperator = null;
 
 function toDisplay(numBtnInput){
       // Check if we can clear display for operand2
@@ -34,6 +35,7 @@ function clear(){
     operator = "";
     operand2 = null;
     clearForOperand2 = false;
+    activeOperator = null;
 }
 
 function backspace(){
@@ -91,12 +93,17 @@ decimalBtn.addEventListener('click', handleDecimalInput);
 //Displays numbers on the screen
 numbs.forEach(numb => {
     numb.addEventListener("click",() => {
+        if(activeOperator){
+            activeOperator.classList.remove("active");
+        }
         toDisplay(numb.textContent);
     })
 });
 
 operators.forEach(ope => {
     ope.addEventListener('click', () => {
+        ope.classList.add('active');
+        activeOperator = ope;
         if(operand1 === null){
             operand1 = parseFloat(display.textContent);
             operator = ope.textContent;

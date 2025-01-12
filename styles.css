@@ -57,3 +57,7 @@ button{
 .operator, .equal{
     background-color: #FF9500;
 }
+
+.active{
+    background-color: lightcoral;
+}
