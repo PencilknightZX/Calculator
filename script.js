@@ -39,7 +39,7 @@ function clear(){
 }
 
 function backspace(){
-    pass;
+    display.textContent = display.textContent.slice(0,-1);
 }
 
 function toPercent(display){
