@@ -123,22 +123,32 @@ numbs.forEach(numb => {
     })
 });
 
+function handleOperatorInput(opeText, opeElement = null){
+    // Add 'active' class to the clicked operator
+    if (activeOperator) {
+        activeOperator.classList.remove('active');
+    }
+    if (opeElement) {
+        opeElement.classList.add('active');
+        activeOperator = opeElement;
+    }
+
+    // Store operand1 and set operator if it's the first operator input
+    if (operand1 === null) {
+        operand1 = parseFloat(display.textContent);
+        operator = opeText;
+        clearForOperand2 = true; // Flag to clear the display for the second operand
+    } else if (operator) {
+        // Perform the operation if operator and operand1 exist
+        operand2 = parseFloat(display.textContent);
+        operate();
+        operator = opeText; // Update the operator for chaining operations
+    }
+}
+
 operators.forEach(ope => {
     ope.addEventListener('click', () => {
-        ope.classList.add('active');
-        activeOperator = ope;
-        if(operand1 === null){
-            operand1 = parseFloat(display.textContent);
-            console.log("ope1: ",operand1);
-            operator = ope.textContent;
-            clearForOperand2 = true;
-        }
-        else if(operator){
-            operand2 = parseFloat(display.textContent);
-            console.log("ope2: ",operand2);
-            operate();
-            operator = ope.textContent;
-        }
+        handleOperatorInput(ope.textContent, ope);
     });
 });
 
@@ -151,12 +161,33 @@ equalBtn.addEventListener('click', () => {
 
 //Keyboard Inputs
 document.addEventListener('keydown', (event) => {
+    const operatorKeys = ["+", "-", "*", "/"]; 
+
     if(event.key === "."){
         handleDecimalInput();
     }
     //Checks if the key is a number excluding the spacebar
     else if(!isNaN(event.key) && event.key !== " "){
+        if(activeOperator){
+            activeOperator.classList.remove("active");
+        }
         toDisplay(event.key);
+    }
+    else if(['Backspace','Delete'].includes(event.key)){
+        backspace();
+    }
+    else if(event.key === "c"){
+        clear();
+    }
+    else if(['Enter','='].includes(event.key)){
+        if(operand1){
+            operand2 = parseFloat(display.textContent);
+            operate();
+        }
+    }
+    else if (operatorKeys.includes(event.key)) {
+        const matchedButton = [...operators].find(ope => ope.textContent === event.key);
+        handleOperatorInput(matchedButton.textContent, matchedButton || null);
     }
 });
 
